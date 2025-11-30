@@ -20,7 +20,7 @@ void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
 
 void ComplexPlane::updateRender()
 {
-	if (m_state == CALCULATING)
+	/*if (m_state == CALCULATING)
 	{
 		int width = m_pixel_size.x;
 		int height = m_pixel_size.y;
@@ -41,6 +41,47 @@ void ComplexPlane::updateRender()
 				m_vArray[index].color = { r, g, b };
 			}
 		}
+		m_state = DISPLAYING;
+	} */
+
+	//Multithreaded version:
+	if (m_state == CALCULATING)
+	{
+		int width = m_pixel_size.x;
+		int height = m_pixel_size.y;
+
+		int numThreads = std::thread::hardware_concurrency();
+		if (numThreads <= 0) numThreads = 4; // fallback for safety
+
+		std::vector<std::thread> threads;
+		threads.reserve(numThreads);
+
+		for (int t = 0; t < numThreads; t++)
+		{
+			threads.emplace_back([this, t, numThreads, width, height]()
+				{
+					for (int y = t; y < height; y += numThreads)
+					{
+						for (int x = 0; x < width; x++)
+						{
+							int index = x + y * width;
+
+							m_vArray[index].position = { float(x), float(y) };
+
+							sf::Vector2f coord = mapPixelToCoords({ x, y });
+							size_t count = countIterations(coord);
+
+							Uint8 r, g, b;
+							iterationsToRGB(count, r, g, b);
+
+							m_vArray[index].color = { r, g, b };
+						}
+					}
+				});
+		}
+		//combine all the threads together here
+		for (auto& th : threads) { th.join(); }
+
 		m_state = DISPLAYING;
 	}
 }
