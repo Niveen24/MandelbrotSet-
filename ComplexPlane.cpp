@@ -169,13 +169,11 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 	else
 	{
 		float t = float(count) / float(MAX_ITER);
-		//r = Uint8(9 * (1 - t) * t * t * t * 255);
-		//g = Uint8(15 * (1 - t) * (1 - t) * t * t * 255);
-		//b = Uint8(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
-				//option2:
-		//r = Uint8(255 * pow(t, 0.6f));       // pink
-		//g = Uint8(200 * pow(t, 1.5f));       // aqua/teal
-		//b = Uint8(255 * pow(1 - t, 2.5f));   // fading cotton glow
+
+				//option1:
+		r = Uint8(255 * pow(t, 0.6f));       // pink
+		g = Uint8(200 * pow(t, 1.5f));       // aqua/teal
+		b = Uint8(255 * pow(1 - t, 2.5f));   // fading cotton glow
 				//option 2:
 		//float red = 255.0f * (0.9f * (1.0f - t) + 0.3f * t);
 		//float green = 255.0f * (0.2f + 0.5f * t * t);
@@ -191,28 +189,6 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//r = Uint8(180 * t * t);             // purple-pink highlight
 		//g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
 		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
-
-		float baseR = 255.0f * pow(t, 0.35f);      // bright pinkish ice
-		float baseG = 180.0f * pow(t, 2.0f);       // soft aqua midtones
-		float baseB = 255.0f * pow(1 - t, 1.8f);   // deep icy blues
-
-		// --- Frostfire wave effect (makes it look alive, NOT flat) ---
-		float wave = 0.5f + 0.5f * sin(t * 12.0f + count * 0.05f);
-
-		baseR *= (0.7f + 0.3f * wave);
-		baseG *= (0.6f + 0.4f * wave);
-		baseB *= (0.8f + 0.2f * wave);
-
-		// --- Glow effect (makes edges shimmer) ---
-		float glow = 90.0f * pow(1.0f - fabs(0.5f - t) * 2.0f, 2.0f);
-
-		baseR = min(255.0f, baseR + glow * 0.9f);
-		baseG = min(255.0f, baseG + glow * 0.5f);
-		baseB = min(255.0f, baseB + glow * 1.2f);
-
-		r = Uint8(baseR);
-		g = Uint8(baseG);
-		b = Uint8(baseB);
 
 
 	}
