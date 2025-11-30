@@ -182,37 +182,10 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = Uint8(green);
 		b = Uint8(blue); */
 			//op 3:
-		//r = Uint8(180 * t * t);             // purple-pink highlight
-		//g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
-		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
+		r = Uint8(180 * t * t);             // purple-pink highlight
+		g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
+		b = Uint8(255 * pow(t, 0.4));       // main icy glow
 
-
-
-		float icyBlue = 255.f * pow(t, 0.4f);     // bright ice glow
-		float coldTeal = 160.f * pow(t, 0.8f);     // mid glow
-		float frostWhite = 220.f * pow(t, 1.5f);     // bright edge flare
-
-		// ---- Galaxy / fire outer region ----
-		float lavaRed = 255.f * pow(1.f - t, 0.7f);    // warm fading red
-		float emberOrg = 130.f * pow(1.f - t, 1.3f);    // deeper ember orange
-		float duskBlue = 80.f * pow(1.f - t, 2.2f);    // cosmic shadow
-
-		// ---- Blended look (no flat pink background!) ----
-		float mix = fabs(0.5f - t) * 2.f;  // 0 in middle, 1 at edges
-
-		float R = lavaRed * mix + icyBlue * (1.f - mix);
-		float G = emberOrg * mix + coldTeal * (1.f - mix);
-		float B = duskBlue * mix + frostWhite * (1.f - mix);
-
-		// Add a subtle outer glow (makes it look like it's shining)
-		float glow = 45.f * (1.f - fabs(0.5f - t) * 2.f);
-		R = min(255.f, R + glow);
-		G = min(255.f, G + glow * 0.4f);  // less green glow
-		B = min(255.f, B + glow * 0.8f);  // heavier blue glow
-
-		r = Uint8(R);
-		g = Uint8(G);
-		b = Uint8(B);
 	}
 }
 
