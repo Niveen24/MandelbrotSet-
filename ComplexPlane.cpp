@@ -169,9 +169,12 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 	else
 	{
 		float t = float(count) / float(MAX_ITER);
-		r = Uint8(9 * (1 - t) * t * t * t * 255);
-		g = Uint8(15 * (1 - t) * (1 - t) * t * t * 255);
-		b = Uint8(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+		//r = Uint8(9 * (1 - t) * t * t * t * 255);
+		//g = Uint8(15 * (1 - t) * (1 - t) * t * t * 255);
+		//b = Uint8(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+		r = Uint8(150 + 100 * sin(3.0f * t)); //purple-pink
+		g = Uint8(20 + 40 * sin(4.0f * t));   //dark blues
+		b = Uint8(180 + 70 * sin(5.0f * t));  //bright neon blue glow
 	}
 }
 
@@ -181,3 +184,5 @@ Vector2f ComplexPlane::mapPixelToCoords(Vector2i mousePixel)
 	float imag = ((float(mousePixel.y) - float(m_pixel_size.y)) / (0 - float(m_pixel_size.y))) * (m_plane_size.y) + (m_plane_center.y - m_plane_size.y / 2.0);
 	return { real, imag };
 }
+
+
