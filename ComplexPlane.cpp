@@ -172,10 +172,26 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//r = Uint8(9 * (1 - t) * t * t * t * 255);
 		//g = Uint8(15 * (1 - t) * (1 - t) * t * t * 255);
 		//b = Uint8(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+				//option2:
+		//r = Uint8(255 * pow(t, 0.6f));       // pink
+		//g = Uint8(200 * pow(t, 1.5f));       // aqua/teal
+		//b = Uint8(255 * pow(1 - t, 2.5f));   // fading cotton glow
+				//option 2:
+	// Cotton-candy glow:
+	// Smooth blend: pink -> purple -> blue -> aqua -> white glow
+		float red = 255.0f * (0.9f * (1.0f - t) + 0.3f * t);
+		float green = 255.0f * (0.2f + 0.5f * t * t);
+		float blue = 255.0f * (0.4f + 0.6f * t);
 
-		r = Uint8(255 * pow(t, 0.6f));       // pink
-		g = Uint8(200 * pow(t, 1.5f));       // aqua/teal
-		b = Uint8(255 * pow(1 - t, 2.5f));   // fading cotton glow
+		// Soft glowing boost
+		float glow = 60.0f * (1.0f - fabs(0.5f - t) * 2.0f);
+		red = min(255.0f, red + glow);
+		green = min(255.0f, green + glow);
+		blue = min(255.0f, blue + glow);
+
+		r = Uint8(red);
+		g = Uint8(green);
+		b = Uint8(blue);
 	}
 }
 
