@@ -15,7 +15,7 @@ int main() {
 
 	ComplexPlane complexPlane(width, height);
 	Font font;
-	if (!font.loadFromFile("Nabla.ttf")) //load font
+	if (!font.loadFromFile("fonts/Nabla.ttf")) //load font
 	{
 		return -1;
 	}
