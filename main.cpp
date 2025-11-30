@@ -15,9 +15,10 @@ int main() {
 
 	ComplexPlane complexPlane(width, height);
 	Font font;
+	font.loadFromFile("fonts/Nabla.ttf");
 	Text infoText;
 	infoText.setFont(font);
-	infoText.setCharacterSize(100);
+	infoText.setCharacterSize(75);
 	infoText.setFillColor(Color::White);
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
