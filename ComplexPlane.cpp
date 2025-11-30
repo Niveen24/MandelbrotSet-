@@ -170,7 +170,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 	{
 		float t = float(count) / float(MAX_ITER);
 
-				//option 2:
+				//option 1: blueish
 		/*float red = 255.0f * (0.9f * (1.0f - t) + 0.3f * t);
 		float green = 255.0f * (0.2f + 0.5f * t * t);
 		float blue = 255.0f * (0.4f + 0.6f * t);
@@ -181,11 +181,15 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		r = Uint8(red);
 		g = Uint8(green);
 		b = Uint8(blue); */
-			//op 3:
-		r = Uint8(180 * t * t);             // purple-pink highlight
-		g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
-		b = Uint8(255 * pow(t, 0.4));       // main icy glow
-
+			//option 2: pinks
+		//r = Uint8(180 * t * t);
+		//g = Uint8(20 * pow(1 - t, 3));  
+		//b = Uint8(255 * pow(t, 0.4));
+		
+		//option 3: insane galaxy with sine waves
+		r = Uint8(255 * pow(t, 0.3f) + 50 * sin(10.0f * t));
+		g = Uint8(200 * pow(t, 0.5f) + 50 * sin(15.0f * t + 1.0f));
+		b = Uint8(255 * pow(t, 0.7f) + 50 * sin(20.0f * t + 2.0f));
 	}
 }
 
