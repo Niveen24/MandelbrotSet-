@@ -1,5 +1,4 @@
-#ifndef COMPLEXPLANE_H
-#define COMPLEXPLANE_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <sstream>
@@ -37,5 +36,3 @@ private:
 	int m_zoomCount;
 	float m_aspectRatio;
 };
-
-#endif
