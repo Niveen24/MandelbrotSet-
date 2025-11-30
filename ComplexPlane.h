@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <sstream>
 #include <cmath>
-#include <threads>
+#include <thread>
 
 using namespace std;
 using namespace sf;
