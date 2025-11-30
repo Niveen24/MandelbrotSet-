@@ -51,8 +51,8 @@ int main() {
 
 		//Draw
 		window.clear();
-		window.draw(complexPlane);
 		window.draw(infoText);
+		window.draw(complexPlane);
 		window.display();
 	}
 
