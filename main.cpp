@@ -18,8 +18,8 @@ int main() {
 	font.loadFromFile("fonts/Nabla.ttf");
 	Text infoText;
 	infoText.setFont(font);
-	infoText.setCharacterSize(75);
-	infoText.setFillColor(Color::White);
+	infoText.setCharacterSize(20);
+	infoText.setFillColor(153,0,76); //set custom color
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
 		//Input
