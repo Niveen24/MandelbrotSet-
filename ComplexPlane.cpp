@@ -18,23 +18,30 @@ void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
 	target.draw(m_vArray);
 }
 
-void complexPlane::updateRender()
+void ComplexPlane::updateRender()
 {
-	if (m_state == State::CALCULATING)
+	if (m_state == CALCULATING)
 	{
-		for (int i = 0; i < pixelWidth; i++)	//i for y (height)
+		int width = m_pixel_size.x;
+		int height = m_pixel_size.y;
+
+		for (int y = 0; y < height; y++) //y = row
 		{
-			for (int j = 0; j < pixelHeight; j++)	//j for x (width)
+			for (int x = 0; x < width; x++) //x = col
 			{
-				vArray[j + i * pixelWidth].position = { (float)j, (float)i }; //sets pos of array element that == screen coords j,i
-				Vector2f coord = mapPixelToCoords({ j, i }); //maps pixels to complex plane coords
-				size_t iterations = countIterations(coord);	//counts how many iterations for that coord
-				Uint8 r, g, b;	//just declaring rgb values
-				iterationsToRGB(iterations, r, g, b); //maps the iterations to rgb vals
-				vArray[j + i * pixelWidth].color = { r, g, b };	//sets color of the elements that == screen coords j and i
+				int index = x + y * width;
+				m_vArray[index].position = { float(x), float(y) };
+
+				Vector2f coord = mapPixelToCoords({ x, y });
+				size_t count = countIterations(coord);
+
+				Uint8 r, g, b;
+				iterationsToRGB(count, r, g, b);
+
+				m_vArray[index].color = { r, g, b };
 			}
-			m_state = State::DISPLAYING;
 		}
+		m_state = DISPLAYING;
 	}
 }
 
@@ -75,15 +82,17 @@ void ComplexPlane::loadText(Text& text)
 	ss << "Cursor: (" << m_mouseLocation.x << ", " << m_mouseLocation.y << ")" << endl;
 	ss << "Left-click to Zoom in" << endl;
 	ss << "Right-click to Zoom out" << endl;
+
+	text.setString(ss.str());
 }
 
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
-	//TODO: count number of iterations of the set fore the given coordinate
-	float x = float(0); //x of z : real
-	float y = float(0);	//y of z : imaginary 
-	float zx = coord.x; //x of c : real
-	float zy = coord.y; //y of c : imaginary
+	float x = coord.x; //c.real
+	float y = coord.y; //c.imaginary
+
+	float zx = float(0);  //z.real starts at 0
+	float zy = float(0);  //z.imag starts at 0
 
 	size_t iteration = 0;
 	const size_t MAX_ITERS = 64;
@@ -93,13 +102,12 @@ size_t ComplexPlane::countIterations(Vector2f coord)
 		float zx2 = zx * zx;
 		float zy2 = zy * zy;
 
-		if ((zx2 + zy2) > float(4)) //2^2 = 4, check to see if escape radius reached
-		{
-			break;
-		}
+		if (zx2 + zy2 > float(4)) { break; } //if abs val of z > 2, break
 
-		float tempzx = zx2 - zy2 + x;
-		float tempzy = float(2) * zx * zy + y;
+		//z = z*z + c
+		float tempzx = zx2 - zy2 + x; //new real part
+		float tempzy = 2.0f * zx * zy + y; //new imaginary part
+
 		zx = tempzx;
 		zy = tempzy;
 
