@@ -19,7 +19,7 @@ int main() {
 	Text infoText;
 	infoText.setFont(font);
 	infoText.setCharacterSize(20);
-	infoText.setFillColor(Color(255,68,0)); //set custom color
+	infoText.setFillColor(Color(139,86,245)); //set custom color
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
 		//Input

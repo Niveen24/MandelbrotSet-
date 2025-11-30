@@ -170,8 +170,9 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 	{
 		float t = float(count) / float(MAX_ITER);
 
-				//option 1: blueish
-		/*float red = 255.0f * (0.9f * (1.0f - t) + 0.3f * t);
+				//option 1: 
+		/*
+		float red = 255.0f * (0.9f * (1.0f - t) + 0.3f * t);
 		float green = 255.0f * (0.2f + 0.5f * t * t);
 		float blue = 255.0f * (0.4f + 0.6f * t);
 		float glow = 60.0f * (1.0f - fabs(0.5f - t) * 2.0f);
@@ -180,24 +181,20 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		blue = min(255.0f, blue + glow);
 		r = Uint8(red);
 		g = Uint8(green);
-		b = Uint8(blue); */
-			//option 2: pinks
+		b = Uint8(blue); 
+		*/
+				//option 2:
 		//r = Uint8(180 * t * t);
 		//g = Uint8(20 * pow(1 - t, 3));  
 		//b = Uint8(255 * pow(t, 0.4));
-		
-			//option 3: insane galaxy with sine waves
+
+				//option 3:
 		//r = Uint8(255 * pow(t, 0.3f) + 50 * sin(10.0f * t));
 		//g = Uint8(200 * pow(t, 0.5f) + 50 * sin(15.0f * t + 1.0f));
 		//b = Uint8(255 * pow(t, 0.7f) + 50 * sin(20.0f * t + 2.0f));
-
-	//option 4: no ugly colors, sine wave smooth
-		//r = Uint8(127.5f * (1.0f + sin(3.0f + 5.0f * t)));
-	//	g = Uint8(127.5f * (1.0f + sin(1.0f + 5.0f * t)));
-		//b = Uint8(127.5f * (1.0f + sin(5.0f * t)));
 		
-	//option 5: smooth gradient, icly blue, white, purple, blue, looks very cool mysterious fantasy
-				r = Uint8(255.0f * (0.5f + 0.5f * cos(3.0f + 5.0f * t)));
+				//option 4:
+		r = Uint8(255.0f * (0.5f + 0.5f * cos(3.0f + 5.0f * t)));
 		g = Uint8(255.0f * (0.5f + 0.5f * cos(1.0f + 5.0f * t)));
 		b = Uint8(255.0f * (0.5f + 0.5f * cos(5.0f * t)));
 	}
