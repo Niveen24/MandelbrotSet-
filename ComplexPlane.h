@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <cmath>
 
 using namespace std;
 using namespace sf;
@@ -16,6 +17,7 @@ enum State { CALCULATING, DISPLAYING }; //enum class for states: CALCULATING / D
 class ComplexPlane : public Drawable
 {
 public:
+	ComplexPlane(int pixelWidth, int pixelHeight);
 	void draw(RenderTarget& target, RenderStates states) const;
 	void zoomIn();
 	void zoomOut();
