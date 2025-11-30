@@ -187,14 +187,24 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
 
 
-		float red = 255.0f * (0.85f * (1.0f - t) + 0.20f * t);   
-		float green = 255.0f * (0.15f + 0.55f * pow(t, 1.3f));  
-		float blue = 255.0f * (0.40f + 0.70f * pow(t, 0.6f));  
-		float texture = 50.0f * sin(8.0f * t) * (1.0f - t); 
-		float glow = 45.0f * (1.0f - fabs(0.5f - t) * 2.0f);
-		red = min(255.0f, red + glow + texture);
-		green = min(255.0f, green + glow * 0.5f + texture * 0.3f);
-		blue = min(255.0f, blue + glow * 1.2f + texture);
+		float blueWave = 255.0f * pow(t, 0.35f);          // bright icy blues
+		float purpleWave = 200.0f * pow(t, 1.2f);           // softer violet
+		float fireEdge = 255.0f * pow(1.0f - t, 6.0f);    // deep fiery outer ring
+
+		// Add glow depending on escape speed (centered around middle values)
+		float glow = 80.0f * (1.0f - fabs(0.5f - t) * 2.0f);
+
+		// Combine them into RGB
+		float red = fireEdge * 0.8f + purpleWave * 0.4f + glow;
+		float green = purpleWave * 0.2f + glow * 0.25f;
+		float blue = blueWave + glow * 0.5f;
+
+		// Clamp to [0,255]
+		red = std::min(255.0f, red);
+		green = std::min(255.0f, green);
+		blue = std::min(255.0f, blue);
+
+		// Apply
 		r = Uint8(red);
 		g = Uint8(green);
 		b = Uint8(blue);
