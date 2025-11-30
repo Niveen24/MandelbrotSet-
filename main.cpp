@@ -15,13 +15,15 @@ int main() {
 
 	ComplexPlane complexPlane(width, height);
 	Font font;
-	if (!font.loadFromFile("arial.ttf")) {
-		cerr << "Error loading font\n";
+	if (!font.loadFromFile("Nabla.ttf")) //load font
+	{
 		return -1;
 	}
 	Text infoText;
 	infoText.setFont(font);
 	infoText.setCharacterSize(14);
+	infoText.setFillColor(Color::White);
+	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
 		//Input
 		Event event;
