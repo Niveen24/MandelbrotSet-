@@ -192,10 +192,14 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//b = Uint8(255 * pow(t, 0.7f) + 50 * sin(20.0f * t + 2.0f));
 
 	//option 4: no ugly colors, sine wave smooth
-		r = Uint8(127.5f * (1.0f + sin(3.0f + 5.0f * t)));
-		g = Uint8(127.5f * (1.0f + sin(1.0f + 5.0f * t)));
-		b = Uint8(127.5f * (1.0f + sin(5.0f * t)));
-
+		//r = Uint8(127.5f * (1.0f + sin(3.0f + 5.0f * t)));
+	//	g = Uint8(127.5f * (1.0f + sin(1.0f + 5.0f * t)));
+		//b = Uint8(127.5f * (1.0f + sin(5.0f * t)));
+		
+	//option 5: smooth gradient, icly blue, white, purple, blue, looks very cool mysterious fantasy
+				r = Uint8(255.0f * (0.5f + 0.5f * cos(3.0f + 5.0f * t)));
+		g = Uint8(255.0f * (0.5f + 0.5f * cos(1.0f + 5.0f * t)));
+		b = Uint8(255.0f * (0.5f + 0.5f * cos(5.0f * t)));
 	}
 }
 
