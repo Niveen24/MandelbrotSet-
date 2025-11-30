@@ -18,7 +18,7 @@ int main() {
 	Text infoText;
 	infoText.setFont(font);
 	infoText.setCharacterSize(14);
-	infoText.setFillColor(Color::Magenta);
+	infoText.setFillColor(Color::White);
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
 		//Input
