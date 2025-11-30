@@ -182,9 +182,22 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = Uint8(green);
 		b = Uint8(blue); */
 			//op 3:
-		r = Uint8(180 * t * t);             // purple-pink highlight
-		g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
-		b = Uint8(255 * pow(t, 0.4));       // main icy glow
+		//r = Uint8(180 * t * t);             // purple-pink highlight
+		//g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
+		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
+
+
+		float red = 255.0f * (0.85f * (1.0f - t) + 0.20f * t);   
+		float green = 255.0f * (0.15f + 0.55f * pow(t, 1.3f));  
+		float blue = 255.0f * (0.40f + 0.70f * pow(t, 0.6f));  
+		float texture = 50.0f * sin(8.0f * t) * (1.0f - t); 
+		float glow = 45.0f * (1.0f - fabs(0.5f - t) * 2.0f);
+		red = min(255.0f, red + glow + texture);
+		green = min(255.0f, green + glow * 0.5f + texture * 0.3f);
+		blue = min(255.0f, blue + glow * 1.2f + texture);
+		r = Uint8(red);
+		g = Uint8(green);
+		b = Uint8(blue);
 
 
 	}
