@@ -187,29 +187,32 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
 
 
-		float blueWave = 255.0f * pow(t, 0.35f);          // bright icy blues
-		float purpleWave = 200.0f * pow(t, 1.2f);           // softer violet
-		float fireEdge = 255.0f * pow(1.0f - t, 6.0f);    // deep fiery outer ring
 
-		// Add glow depending on escape speed (centered around middle values)
-		float glow = 80.0f * (1.0f - fabs(0.5f - t) * 2.0f);
+		float icyBlue = 255.f * pow(t, 0.4f);     // bright ice glow
+		float coldTeal = 160.f * pow(t, 0.8f);     // mid glow
+		float frostWhite = 220.f * pow(t, 1.5f);     // bright edge flare
 
-		// Combine them into RGB
-		float red = fireEdge * 0.8f + purpleWave * 0.4f + glow;
-		float green = purpleWave * 0.2f + glow * 0.25f;
-		float blue = blueWave + glow * 0.5f;
+		// ---- Galaxy / fire outer region ----
+		float lavaRed = 255.f * pow(1.f - t, 0.7f);    // warm fading red
+		float emberOrg = 130.f * pow(1.f - t, 1.3f);    // deeper ember orange
+		float duskBlue = 80.f * pow(1.f - t, 2.2f);    // cosmic shadow
 
-		// Clamp to [0,255]
-		red = std::min(255.0f, red);
-		green = std::min(255.0f, green);
-		blue = std::min(255.0f, blue);
+		// ---- Blended look (no flat pink background!) ----
+		float mix = fabs(0.5f - t) * 2.f;  // 0 in middle, 1 at edges
 
-		// Apply
-		r = Uint8(red);
-		g = Uint8(green);
-		b = Uint8(blue);
+		float R = lavaRed * mix + icyBlue * (1.f - mix);
+		float G = emberOrg * mix + coldTeal * (1.f - mix);
+		float B = duskBlue * mix + frostWhite * (1.f - mix);
 
+		// Add a subtle outer glow (makes it look like it's shining)
+		float glow = 45.f * (1.f - fabs(0.5f - t) * 2.f);
+		R = min(255.f, R + glow);
+		G = min(255.f, G + glow * 0.4f);  // less green glow
+		B = min(255.f, B + glow * 0.8f);  // heavier blue glow
 
+		r = Uint8(R);
+		g = Uint8(G);
+		b = Uint8(B);
 	}
 }
 
