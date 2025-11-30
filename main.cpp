@@ -17,7 +17,7 @@ int main() {
 	Font font;
 	Text infoText;
 	infoText.setFont(font);
-	infoText.setCharacterSize(14);
+	infoText.setCharacterSize(100);
 	infoText.setFillColor(Color::White);
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
@@ -51,8 +51,8 @@ int main() {
 
 		//Draw
 		window.clear();
-		window.draw(infoText);
 		window.draw(complexPlane);
+		window.draw(infoText);
 		window.display();
 	}
 
