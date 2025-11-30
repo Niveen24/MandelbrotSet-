@@ -186,10 +186,16 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//g = Uint8(20 * pow(1 - t, 3));  
 		//b = Uint8(255 * pow(t, 0.4));
 		
-		//option 3: insane galaxy with sine waves
-		r = Uint8(255 * pow(t, 0.3f) + 50 * sin(10.0f * t));
-		g = Uint8(200 * pow(t, 0.5f) + 50 * sin(15.0f * t + 1.0f));
-		b = Uint8(255 * pow(t, 0.7f) + 50 * sin(20.0f * t + 2.0f));
+			//option 3: insane galaxy with sine waves
+		//r = Uint8(255 * pow(t, 0.3f) + 50 * sin(10.0f * t));
+		//g = Uint8(200 * pow(t, 0.5f) + 50 * sin(15.0f * t + 1.0f));
+		//b = Uint8(255 * pow(t, 0.7f) + 50 * sin(20.0f * t + 2.0f));
+
+		//option 4: insane colors with cosine waves pinks and icy blue that looks like icicles
+		r = Uint8(255 * pow(t, 0.3f) + 50 * cos(10.0f * t));
+		g = Uint8(200 * pow(t, 0.5f) + 50 * cos(15.0f * t + 1.0f));
+		b = Uint8(255 * pow(t, 0.7f) + 50 * cos(20.0f * t + 2.0f));
+
 	}
 }
 
