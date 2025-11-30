@@ -9,11 +9,9 @@ int main() {
 
 	int width = VideoMode::getDesktopMode().width;
 	int height = VideoMode::getDesktopMode().height;
-	//width /= 2;			//temporary for faster testing
-	//height /= 2;			//temporary for faster testing				
-	RenderWindow window(VideoMode(width, height), "Mandelbrot");
-
+	RenderWindow window(VideoMode(width, height), "Mandelbrot");	
 	ComplexPlane complexPlane(width, height);
+
 	Font font;
 	font.loadFromFile("fonts/Nabla.ttf");
 	Text infoText;
@@ -21,28 +19,37 @@ int main() {
 	infoText.setCharacterSize(20);
 	infoText.setFillColor(Color(139,86,245)); //set custom color
 	infoText.setPosition(float(10), float(10));
-	while (window.isOpen()) {
+
+	while (window.isOpen())
+	{
 		//Input
 		Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed) {
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::Closed)
+			{
 				window.close();
 			}
-			else if (event.type == Event::MouseButtonPressed) {
-				if (event.mouseButton.button == Mouse::Right) {
+			else if (event.type == Event::MouseButtonPressed) //if mouse clicked
+			{
+				if (event.mouseButton.button == Mouse::Right)	//right click zooms out
+				{
 					complexPlane.zoomOut();
 					complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
 				}
-				else if (event.mouseButton.button == Mouse::Left) {
+				else if (event.mouseButton.button == Mouse::Left) //left click zooms in
+				{
 					complexPlane.zoomIn();
 					complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
 				}
 			}
-			else if (event.type == Event::MouseMoved) {
-				complexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y });
+			else if (event.type == Event::MouseMoved)	//if mouse moved, update location (so coords change and text updates)
+			{
+				complexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y }); 
 			}
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+		if (Keyboard::isKeyPressed(Keyboard::Escape))
+		{
 			window.close();
 		}
 

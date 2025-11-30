@@ -13,12 +13,12 @@ ComplexPlane::ComplexPlane(int pixelWidth, int pixelHeight)
 	m_vArray.resize(pixelWidth * pixelHeight);
 }
 
-void ComplexPlane::draw(RenderTarget& target, RenderStates states) const
+void ComplexPlane::draw(RenderTarget& target, RenderStates states) const	//draws the vertex array to target
 {
 	target.draw(m_vArray);
 }
 
-void ComplexPlane::updateRender()
+void ComplexPlane::updateRender()	//updates vertex array if calculating
 {
 	/*if (m_state == CALCULATING)
 	{
@@ -45,36 +45,36 @@ void ComplexPlane::updateRender()
 	} */
 
 	//Multithreaded version:
+
 	if (m_state == CALCULATING)
 	{
 		int width = m_pixel_size.x;
 		int height = m_pixel_size.y;
 
-		int numThreads = thread::hardware_concurrency();
-		if (numThreads <= 0) numThreads = 4; // fallback for safety
+		int numThreads = thread::hardware_concurrency(); //gets num of threads available
 
-		vector<thread> threads;
-		threads.reserve(numThreads);
+		vector<thread> threads; 
+		threads.reserve(numThreads);	//reserve space for threads
 
 		for (int t = 0; t < numThreads; t++)
 		{
-			threads.emplace_back([this, t, numThreads, width, height]()
+			threads.emplace_back([this, t, numThreads, width, height]()	//function for each thread to run
 				{
-					for (int y = t; y < height; y += numThreads)
+					for (int y = t; y < height; y += numThreads) //nest loops
 					{
 						for (int x = 0; x < width; x++)
 						{
 							int index = x + y * width;
 
-							m_vArray[index].position = { float(x), float(y) };
+							m_vArray[index].position = { float(x), float(y) };	//sets pos
 
-							Vector2f coord = mapPixelToCoords({ x, y });
-							size_t count = countIterations(coord);
+							Vector2f coord = mapPixelToCoords({ x, y });	//maps pixels to coords
+							size_t count = countIterations(coord);	//counts iterations
 
 							Uint8 r, g, b;
 							iterationsToRGB(count, r, g, b);
 
-							m_vArray[index].color = { r, g, b };
+							m_vArray[index].color = { r, g, b };	//sets color of element in array
 						}
 					}
 				});
@@ -98,24 +98,24 @@ void ComplexPlane::zoomIn()
 void ComplexPlane::zoomOut() //same as zoomIn but decrements zoomCount instead of incrementing
 {
 	m_zoomCount--;
-	float newWidth = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount);
-	float newHeight = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
+	float newWidth = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount); //recalculates width 
+	float newHeight = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount); //recalculates height
 	m_plane_size = { newWidth, newHeight };
 	m_state = State::CALCULATING;
 }
 
-void ComplexPlane::setCenter(Vector2i mousePixel)
+void ComplexPlane::setCenter(Vector2i mousePixel)	//sets new center based on mouse pixel location
 {
 	m_plane_center = mapPixelToCoords(mousePixel);
 	m_state = State::CALCULATING;
 }
 
-void ComplexPlane::setMouseLocation(Vector2i mousPixel)
+void ComplexPlane::setMouseLocation(Vector2i mousPixel)	//sets mouse location in complex plane based on pixel location
 {
 	m_mouseLocation = mapPixelToCoords(mousPixel);
 }
 
-void ComplexPlane::loadText(Text& text)
+void ComplexPlane::loadText(Text& text)	//stores info in stringsteam then uses string stream to set text
 {
 	stringstream ss;
 	ss << "Mandelbrot Set" << endl;
@@ -202,8 +202,8 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 
 Vector2f ComplexPlane::mapPixelToCoords(Vector2i mousePixel)
 {
-	float real = ((float(mousePixel.x) - 0) / (float(m_pixel_size.x) - 0)) * (m_plane_size.x) + (m_plane_center.x - m_plane_size.x / 2.0);
-	float imag = ((float(mousePixel.y) - float(m_pixel_size.y)) / (0 - float(m_pixel_size.y))) * (m_plane_size.y) + (m_plane_center.y - m_plane_size.y / 2.0);
+	float real = ((float(mousePixel.x) - 0) / (float(m_pixel_size.x) - 0)) * (m_plane_size.x) + (m_plane_center.x - m_plane_size.x / 2.0);	//maps pixel x to real part
+	float imag = ((float(mousePixel.y) - float(m_pixel_size.y)) / (0 - float(m_pixel_size.y))) * (m_plane_size.y) + (m_plane_center.y - m_plane_size.y / 2.0);	//maps pixel y to imaginary part
 	return { real, imag };
 }
 
