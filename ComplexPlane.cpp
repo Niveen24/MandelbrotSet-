@@ -193,16 +193,16 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
 
 		// Frostfire Nebula (combined waves + glow + icy tones)
-		float t = float(count) / float(MAX_ITER);
+		float col = float(count) / float(MAX_ITER);
 
 		// --- Wave modulation (creates swirls instead of flat colors) ---
-		float wave = 0.5f + 0.5f * sin(8.0f * t + m_zoomCount * 0.4f);
-		float wave2 = 0.5f + 0.5f * sin(15.0f * t + m_zoomCount * 0.8f);
+		float wave = 0.5f + 0.5f * sin(8.0f * col + m_zoomCount * 0.4f);
+		float wave2 = 0.5f + 0.5f * sin(15.0f * col + m_zoomCount * 0.8f);
 
 		// --- Core frostfire blend ---
 		float red = 255.0f * (0.7f * pow(t, 0.6f) + 0.3f * wave);
-		float green = 255.0f * (0.3f + 0.5f * pow(t, 2.0f) * wave2);
-		float blue = 255.0f * (0.8f * pow(1.0f - t, 2.5f) + 0.4f * wave);
+		float green = 255.0f * (0.3f + 0.5f * pow(col, 2.0f) * wave2);
+		float blue = 255.0f * (0.8f * pow(1.0f - col, 2.5f) + 0.4f * wave);
 
 		// --- Extra icy, luminous glow ---
 		float glow = 85.0f * (1.0f - fabs(0.5f - t) * 2.0f);
