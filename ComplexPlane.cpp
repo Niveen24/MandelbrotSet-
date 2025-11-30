@@ -50,7 +50,7 @@ void ComplexPlane::updateRender()
 		int width = m_pixel_size.x;
 		int height = m_pixel_size.y;
 
-		int numThreads = hardware_concurrency(); //if this doesnt work, change to thread::hardware_concurrency()
+		int numThreads = thread::hardware_concurrency();
 		if (numThreads <= 0) numThreads = 4; // fallback for safety
 
 		vector<thread> threads;
