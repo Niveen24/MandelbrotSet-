@@ -9,20 +9,16 @@ int main() {
 
 	int width = VideoMode::getDesktopMode().width;
 	int height = VideoMode::getDesktopMode().height;
-	width /= 2;			//temporary for faster testing				TODO: REMOVE THIS
-	height /= 2;		//temporary for faster testing				TODO: REMOVE THIS
+	//width /= 2;			//temporary for faster testing
+	//height /= 2;			//temporary for faster testing				
 	RenderWindow window(VideoMode(width, height), "Mandelbrot");
 
 	ComplexPlane complexPlane(width, height);
 	Font font;
-	if (!font.loadFromFile("fonts/Nabla.ttf")) //load font
-	{
-		return -1;
-	}
 	Text infoText;
 	infoText.setFont(font);
 	infoText.setCharacterSize(14);
-	infoText.setFillColor(Color::White);
+	infoText.setFillColor(Color(153,0,76, 200));
 	infoText.setPosition(float(10), float(10));
 	while (window.isOpen()) {
 		//Input

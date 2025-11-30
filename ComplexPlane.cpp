@@ -50,10 +50,10 @@ void ComplexPlane::updateRender()
 		int width = m_pixel_size.x;
 		int height = m_pixel_size.y;
 
-		int numThreads = std::thread::hardware_concurrency();
+		int numThreads = hardware_concurrency(); //if this doesnt work, change to thread::hardware_concurrency()
 		if (numThreads <= 0) numThreads = 4; // fallback for safety
 
-		std::vector<std::thread> threads;
+		vector<thread> threads;
 		threads.reserve(numThreads);
 
 		for (int t = 0; t < numThreads; t++)
@@ -68,7 +68,7 @@ void ComplexPlane::updateRender()
 
 							m_vArray[index].position = { float(x), float(y) };
 
-							sf::Vector2f coord = mapPixelToCoords({ x, y });
+							Vector2f coord = mapPixelToCoords({ x, y });
 							size_t count = countIterations(coord);
 
 							Uint8 r, g, b;
