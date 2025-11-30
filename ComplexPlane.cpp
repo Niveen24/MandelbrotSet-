@@ -192,31 +192,27 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		//g = Uint8(20 * pow(1 - t, 3));     // dark shadow glow
 		//b = Uint8(255 * pow(t, 0.4));       // main icy glow
 
-		// Frostfire Nebula (combined waves + glow + icy tones)
-		float col = float(count) / float(MAX_ITER);
+		float baseR = 255.0f * pow(t, 0.35f);      // bright pinkish ice
+		float baseG = 180.0f * pow(t, 2.0f);       // soft aqua midtones
+		float baseB = 255.0f * pow(1 - t, 1.8f);   // deep icy blues
 
-		// --- Wave modulation (creates swirls instead of flat colors) ---
-		float wave = 0.5f + 0.5f * sin(8.0f * col + m_zoomCount * 0.4f);
-		float wave2 = 0.5f + 0.5f * sin(15.0f * col + m_zoomCount * 0.8f);
+		// --- Frostfire wave effect (makes it look alive, NOT flat) ---
+		float wave = 0.5f + 0.5f * sin(t * 12.0f + count * 0.05f);
 
-		// --- Core frostfire blend ---
-		float red = 255.0f * (0.7f * pow(t, 0.6f) + 0.3f * wave);
-		float green = 255.0f * (0.3f + 0.5f * pow(col, 2.0f) * wave2);
-		float blue = 255.0f * (0.8f * pow(1.0f - col, 2.5f) + 0.4f * wave);
+		baseR *= (0.7f + 0.3f * wave);
+		baseG *= (0.6f + 0.4f * wave);
+		baseB *= (0.8f + 0.2f * wave);
 
-		// --- Extra icy, luminous glow ---
-		float glow = 85.0f * (1.0f - fabs(0.5f - t) * 2.0f);
-		red = min(255.0f, red + glow);
-		green = min(255.0f, green + glow);
-		blue = min(255.0f, blue + glow);
+		// --- Glow effect (makes edges shimmer) ---
+		float glow = 90.0f * pow(1.0f - fabs(0.5f - t) * 2.0f, 2.0f);
 
-		// --- Slight blue-white frost highlight ---
-		blue = min(255.0f, blue + 20.0f * wave2);
+		baseR = min(255.0f, baseR + glow * 0.9f);
+		baseG = min(255.0f, baseG + glow * 0.5f);
+		baseB = min(255.0f, baseB + glow * 1.2f);
 
-		// Final assignment
-		r = Uint8(red);
-		g = Uint8(green);
-		b = Uint8(blue);
+		r = Uint8(baseR);
+		g = Uint8(baseG);
+		b = Uint8(baseB);
 
 
 	}
