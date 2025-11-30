@@ -1,0 +1,62 @@
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include "ComplexPlane.h"
+
+using namespace std;
+using namespace sf;
+
+int main() {
+
+	int width = VideoMode::getDesktopMode().width;
+	int height = VideoMode::getDesktopMode().height;
+	width /= 2;			//temporary for faster testing				TODO: REMOVE THIS
+	height /= 2;		//temporary for faster testing				TODO: REMOVE THIS
+	RenderWindow window(VideoMode(width, height), "Mandelbrot");
+
+	ComplexPlane complexPlane(width, height);
+	Font font;
+	if (!font.loadFromFile("arial.ttf")) {
+		cerr << "Error loading font\n";
+		return -1;
+	}
+	Text infoText;
+	infoText.setFont(font);
+	infoText.setCharacterSize(14);
+	while (window.isOpen()) {
+		//Input
+		Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == Event::Closed) {
+				window.close();
+			}
+			else if (event.type == Event::MouseButtonPressed) {
+				if (event.mouseButton.button == Mouse::Right) {
+					complexPlane.zoomOut();
+					complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+				}
+				else if (event.mouseButton.button == Mouse::Left) {
+					complexPlane.zoomIn();
+					complexPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
+				}
+			}
+			else if (event.type == Event::MouseMoved) {
+				complexPlane.setMouseLocation({ event.mouseMove.x, event.mouseMove.y });
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+			window.close();
+		}
+
+		//Update
+		complexPlane.updateRender();
+		complexPlane.loadText(infoText);
+
+		//Draw
+		window.clear();
+		window.draw(complexPlane);
+		window.draw(infoText);
+		window.display();
+	}
+
+	return 0;
+}
